@@ -1,54 +1,83 @@
-//user clicks on a button
-//search giphy for gifs related to that button's animal
-//display those gifs to the user
+var savedMovieList = ["Toy Story", "Toy Story 2", "Toy Story 3", "Toy Story 4"];
+    var movieList = [];
+
+    function createCard(response) {
+      // Create a new boostrap card container
+      var article = $("<article>");
+      article.addClass("card");
+
+      // Create an image elment, add attributes, and append to figure
+      var posterImage = $("<img>");
+      posterImage.attr("src", response.Poster);
+      posterImage.attr("alt", response.Title + " Poster");
+
+      var moviePoster = $("<figure>");
+      moviePoster.append(posterImage);
+      article.append(moviePoster);
+
+      // Create a new card body container
+      var cardBody = $("<div>");
+      cardBody.addClass("card-body");
+
+      // Add movie name
+      var movieName = $("<h1>");
+      movieName.addClass("card-title");
+      movieName.html(response.Title);
+      article.append(movieName);
+
+      // Add description
+      var movieDescription = $("<p>");
+      movieDescription.addClass("card-text");
+      movieDescription.html(response.Plot);
+      article.append(movieDescription);
+
+      // Append the new card to the HTML body
+      $("#gif-section").append(article);
+
+    }
+
+    function getMovie(movie) {
+
+      // queryURL endpoint for OMDB API
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + movie + "&api_key=UWJ78tsEAy2ys9CkuDRhr6Wwh5XWMynL&limit=5";
 
 
-//click function for the buttons
-    //retrieve the animal type from the data-animal attribute
-    //run gif search
-    $(".animals").click(function() {
+      // AJAX call to OBMD API with promise and callback handler
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).done(function(response) {
+        if (response.Response === "False") {
+          alert(response.Error);
+        }
+        else if (movieList.indexOf(response.Title) >= 0) {
+          alert ("Movie already in List!")
+        }
+        else {
+          createCard(response);
+          movieList.push(response.Title);
+        }
+      });
 
-        //retrieve info from clicked button
-        var term = $(this).data("animal")
-    
-        //creates the url
-        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-        term + "&api_key=UWJ78tsEAy2ys9CkuDRhr6Wwh5XWMynL";
-    
-        //calls the api
-        $.ajax({
-            url: queryURL,
-            method: "GET"
-    
-            //runs once response received
-        }).then(function(res) {
-            console.log(res.data)
-            //clears any previous content
-            $("#display").empty();
-    
-            //loop over response.data
-            for(var i = 0; i < res.data.length; i ++) {
-    
-                //creating a wrapper to hold the gif and the rating
-                var $div = $("<div>")
-                    .addClass("gif-div");
-    
-                //creating an image tag with a class of gif-image and and src from response
-                var $img = $("<img>")
-                    .addClass("gif-img")
-                    .attr("src", res.data[i].images.fixed_height.url)
-                    .attr("alt", "cat gif");
-    
-                //create a p tag to hold rating (retreived from response)
-                var $p = $("<p>")
-                    .text(res.data[i].rating)
-    
-                //appending p and img tags to the wrapper and then the wrapper to the display div
-                $("#display").append(
-                    $($div).append($img, $p)
-                )
-    
-            }
-        })
-    })
-    
+    }
+
+    // Create a bootstrap card for each item in the movieList array
+
+    for (var i = 0; i < movieList.length; i++) {
+
+      var movie = movieList[i];
+      getMovie(movie);
+
+    }
+
+    //
+    // TO DO: Create button click handler to get the form submission,
+    // and call the AJAX function, passing the name of the new movie
+    //
+
+    $("#search").click(function() {
+
+      var movie = $("#film-name").val();
+      getMovie(movie);
+      
+    });
