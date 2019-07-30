@@ -4,24 +4,38 @@
 <head>
   <meta charset="utf-8">
   <title>GIPHY API</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link href="assets/css/style.css" rel="stylesheet" type="text/css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 </head>
 
 <body>
-  <div class="container">
-    <h1>GIFS</h1>
-      Seach for a GIF <input id="gif-name">
-      <button id="search">Add GIF</button>
+  <div class="col-md-12 jumbotron jumbotron-fluid">
+    <div id="title">Let's Find a Giphy!</div>
   </div>
-  <div class="container" id="gif-section"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12" id="giphy-search">
+        Search <input id="giphy-name">
+        <button id="search">Go</button>
+      </div>
+    </div>
 
+    <div class="row">
+      <div class="col-md-12">
+        <span id="giphys"></span>
+      </div>
+    </div>
+
+  </div>
   <script type="text/javascript" src="assets/javascript/app.js"></script>
 
-    <footer>
-        <p>Copyright © 2019</p>
-    </footer>
+  <footer>
+    <p>Copyright © 2019</p>
+  </footer>
+
 </body>
+
 </html>

@@ -1,68 +1,37 @@
-var giphyList = [];
+$("#search").click(function () {
+  var giphy = $("#giphy-name").val();
+  $("#giphys").html("");
+  getgiphy(giphy);
+});
 
-    function createCard(response) {
-      var article = $("<article>");
-      article.addClass("card");
+function getgiphy(giphy) {
+  var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=UWJ78tsEAy2ys9CkuDRhr6Wwh5XWMynL&q=" + giphy + "&limit=10";
 
-      var giphyImage = $("<img>");
-      giphyImage.attr("src", response.data[17].original_still);
-
-      var giphyImage = $("<figure>");
-      giphyImage.append(giphyImage);
-      article.append(giphyImage);
-
-      var cardBody = $("<div>");
-      cardBody.addClass("card-body");
-      
-      $("#gif-section").append(article);
-
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).done(function (response) {
+    if (response.Response === "False") {
+      alert(response.Error);
     }
-
-    function getGif(giphy) {
-
-      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + giphy + "&api_key=UWJ78tsEAy2ys9CkuDRhr6Wwh5XWMynL&limit=5";
-
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      }).done(function(response) {
-        if (response.Response === "False") {
-          alert(response.Error);
-        }
-        else if (giphy.indexOf(response.data[17].original_still) >= 0) {
-          alert ("Gif already in List!")
-        }
-        else {
-          createCard(response);
-          gif.push(response.Title);
-        }
-      });
-
+    else {
+      for (i = 0; i < response.data.length; i++) {
+        $("#giphys").append("<img src=" + response.data[i].images.fixed_width.url + "id=img" + i + ">");
+      }
     }
+  });
+}
 
-    for (var i = 0; i < giphyList.length; i++) {
+//working on stopping and starting my giphs
+$("#giphys").on("click", function () {
+  var state = $(this).attr("data-state");
 
-      var giphy = giphy[i];
-      getGif(giphy);
+  if (state === "still") {
+    $(this).attr("src", $(this).attr("data-animate"));
+    $(this).attr("data-state", "animate");
+  } else {
+    $(this).attr("src", $(this).attr("data-still"));
+    $(this).attr("data-state", "still");
+  }
+});
 
-    }
-
-    $("#search").click(function() {
-
-      var giphy = $("#gif-name").val();
-      getGif(giphy);
-      
-    });
-
-    function animateGif(){
-        console.log("click")
-        var state = $(this).attr("data-state");
-        if(state === "still"){
-            $(this).attr("src", $(this).attr("data-animate"));
-            $(this).attr("data-state", "animate");
-        } else {
-            $(this).attr("src", $(this).attr("data-still"));
-            $(this).attr("data-state", "still");
-        }
-    
-    }
