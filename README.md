@@ -1,7 +1,8 @@
 # GifTastic
-Animated GIF search
+An app that uses HTML5, Bootstrap, CSS, Javascript, and JQuery.
 
-Enter a search term in the form field 
-When submitted, you will see a page of animated gifs
+The user enters a Gif search and the page populates with 10 items related to the search. 
+
+Code is included to stop/start the Gifs.
 
  https://elizairwin.github.io/GifTastic/
